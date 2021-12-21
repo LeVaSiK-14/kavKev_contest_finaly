@@ -11,7 +11,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = 'drfdhsyugbebnfwidbhfijewbfndhfnuiehrfrnujn'
 
-DEBUG = True
+DEBUG = False
 
 # Разрешенные хосты
 ALLOWED_HOSTS = ['*']
@@ -33,8 +33,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'corsheaders',
-    'django_celery_beat',
-    'django_celery_results',
+    # 'django_celery_beat',
+    # 'django_celery_results',
     'psycopg2',
     # Мои приложения
     'mainapp',
@@ -130,18 +130,18 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://kavkev.kg',
-    'http://3e73-212-112-100-242.ngrok.io',
+    'https://048a-212-42-120-155.ngrok.io',
 ]
 
 # Настройка Celery
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_BROKER_TRANSPORT = 'redis'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = "UTC"
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_BROKER_URL = 'redis://redis:6379'
+# CELERY_BROKER_TRANSPORT = 'redis'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = "UTC"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+# CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
 
 

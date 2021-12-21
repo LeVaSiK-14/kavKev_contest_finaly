@@ -1,11 +1,17 @@
 from accounts.models import User, Contest
-from mainapp.serializers import UserProfileSerializer, TokenSerializer, ContestSerializer
+from mainapp.serializers import (
+                            UserProfileSerializer,
+                            TokenSerializer,
+                            ContestSerializer,
+                            UserTokensSerializer)
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.status import HTTP_200_OK
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from mainapp.models import Token
+from mainapp.models import Token, UserTokens
+from datetime import date
 
 
 class UserModelViewSet(ModelViewSet):
@@ -21,14 +27,14 @@ class UserModelViewSet(ModelViewSet):
         first_name = user.first_name
         last_name = user.last_name
         qr_quantity = user.qr_quantity
-        qr_in_day = user.qr_in_day
+        qr_in_day = UserTokens.objects.filter(user=user, date=date.today()).count()
         which_contest = ContestSerializer(user.which_contest).data
 
         all_contest = Contest.objects.all().order_by('need_qr')
         contest_serializer = ContestSerializer(all_contest, many=True)
-
-        all_token = Token.objects.filter(user=user)
-        token_serializer = TokenSerializer(all_token, many=True)
+        #
+        all_token = UserTokens.objects.filter(user=user)
+        token_serializer = UserTokensSerializer(all_token, many=True)
 
         data = {
 
@@ -42,4 +48,7 @@ class UserModelViewSet(ModelViewSet):
         return Response({
                     'profile': data,
                     'contests': contest_serializer.data,
-                    'tokens': token_serializer.data})
+            'tokens': token_serializer.data
+                    })
+
+    # 'tokens': token_serializer.data

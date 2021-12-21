@@ -3,10 +3,11 @@ from rest_framework.filters import SearchFilter
 from django_filters import rest_framework as django_filter
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from mainapp.models import Token
-from mainapp.serializers import TokenSerializer, ContestSerializer
+from mainapp.models import Token, UserTokens
+from mainapp.serializers import TokenSerializer, ContestSerializer, UserTokensSerializer
 from accounts.models import Contest
 from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from datetime import date
 
 
 
@@ -31,10 +32,11 @@ class RetrieveUpdateToken(RetrieveUpdateAPIView):
     def update(self, request, *args, **kwargs):
         token = self.get_object()
         user = request.user
+        qr_in_day = UserTokens.objects.filter(user=user, date=date.today()).count()
         if token.isActive == False:
             return Response({'Error': 'Данный QR код был отсканирован ранее'}, status=HTTP_404_NOT_FOUND)
         else:
-            if user.qr_in_day >= 3:
+            if qr_in_day >= 3:
                 return Response({'Error': 'В день можно отсканировать не более 3 QR кодов'}, status=HTTP_400_BAD_REQUEST)
             else:
 
@@ -42,8 +44,9 @@ class RetrieveUpdateToken(RetrieveUpdateAPIView):
                 token.isActive = False
                 token.save()
                 user.qr_quantity += 1
-                user.qr_in_day += 1
                 user.save()
+
+                UserTokens.objects.create(user=user, token=token)
 
                 contests = Contest.objects.all().order_by('need_qr')
                 if user.qr_quantity < contests.first().need_qr:
