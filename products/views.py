@@ -176,8 +176,8 @@ class ProductsViewSet(ModelViewSet):
             genPrice = sum(genPrice)
             cart.sum_price = genPrice
             cart.save()
-            serializer = CartSerializer(instance=cart)
-            return Response(serializer.data)
+            serializer = CartSerializer(cart, context={'request': request})
+            return Response(data=serializer.data)
 
 
 class CartViewSet(ModelViewSet):

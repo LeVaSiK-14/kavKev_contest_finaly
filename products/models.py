@@ -11,6 +11,8 @@ class Category(models.Model):
     category = models.CharField(
                                 max_length=127, 
                                 default='')
+    image = models.ImageField(upload_to="media/category", null=True, blank=True, verbose_name='Картинка')
+
 
     def __str__(self):
         return self.category
@@ -46,6 +48,9 @@ class Products(models.Model):
                                         null=True,
                                         default=0.0,
                                         verbose_name='Рейтинг продукта')
+    
+    image = models.ImageField(upload_to="media/products", null=True, blank=True, verbose_name='Картинка')
+    
 
     def __str__(self):
         return f'{self.category.category} - {self.name_product}'

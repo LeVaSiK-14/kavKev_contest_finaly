@@ -18,7 +18,7 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = Products
-        fields = ['id', 'category', 'name_product', 'amount', 'composition', 'price', 'inStock', 'articul', 'raiting_general']
+        fields = ['id', 'category', 'image', 'name_product', 'amount', 'composition', 'price', 'inStock', 'articul', 'raiting_general']
         read_only_fields = ['category','raiting_general']
         
 
@@ -28,16 +28,19 @@ class CategorySerializer(ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
     class Meta:
         model = Category
-        fields = ['id', 'category', 'products']
+        fields = ['id', 'category', 'image', 'products']
 
 
 
 class CartProductSerializer(ModelSerializer):
-    name_product = serializers.ReadOnlyField(source='product.name_product')
+    #name_product = serializers.ReadOnlyField(source='product.name_product')
+    #id_product = serializers.ReadOnlyField(source="product.id")
+    #image = serializers.ReadOnlyField(source='product.image')
+    product = ProductSerializer(read_only=True)
     class Meta:
         model = CartProduct
-        fields = ['id', 'name_product', 'quantity_product', 'general_price', ]
-        read_only_fields = ['name_product', 'quantity_product', 'general_price', ]
+        fields = ['product', 'quantity_product', 'general_price', ]
+        read_only_fields = ['quantity_product', 'general_price', ]
 
 
 class CartSerializer(ModelSerializer):

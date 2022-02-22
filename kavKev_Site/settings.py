@@ -116,11 +116,14 @@ USE_L10N = True
 USE_TZ = True
 
 # Настройка Static файлов
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR / 'static')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
-
+#STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Настройка CORS headers
 CORS_ORIGIN_WHITELIST = [
@@ -153,6 +156,8 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
     ]
 }
 

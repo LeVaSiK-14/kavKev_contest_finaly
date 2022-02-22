@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from mainapp.models import Token, UserTokens
 from datetime import date
-
+from accounts.serializers import AllUserSerializer
 
 class UserModelViewSet(ModelViewSet):
 
@@ -52,3 +52,7 @@ class UserModelViewSet(ModelViewSet):
                     })
 
     # 'tokens': token_serializer.data
+
+class AllUsersView(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = AllUserSerializer

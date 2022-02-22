@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from rest_framework import permissions
 
@@ -25,5 +27,9 @@ urlpatterns = [
     path('api/', include('products.urls')),
     path('api/', include('order.urls')),
     path('api/', include('rest_auth.urls')),
+    path('auth/', include('rest_framework.urls')),
     path('api/swagger/', schema_view.with_ui(), name='schema-json'),
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
